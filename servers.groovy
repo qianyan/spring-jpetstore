@@ -1,10 +1,10 @@
 def deploy(id) {
     unstash 'war'
-    sh "cp spring-jpetstore.war /tmp/webapps/${id}.war"
+    sh "cp spring-jpetstore.war /tmp/webapps/jpetstore-${id}.war"
 }
 
 def undeploy(id) {
-    sh "rm /tmp/webapps/${id}.war"
+    sh "rm /tmp/webapps/jpetstore-${id}.war"
 }
 
 def runWithServer(body) {
