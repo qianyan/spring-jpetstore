@@ -24,4 +24,8 @@ node {
         sh "docker exec '${containerId.id}' cp /var/jenkins_home/jobs/PetStore/workspace/target/spring-jpetstore.war /usr/local/tomcat/webapps/"
 
     }
+
+    stage("Test") {
+        sh "mvn test -Dcucumber.options='--tags @dev'"
+    }
 }
