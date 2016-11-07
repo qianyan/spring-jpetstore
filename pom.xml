@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>ik.am.jpetstore</groupId>
     <artifactId>spring-jpetstore</artifactId>
@@ -8,15 +8,15 @@
     <version>1.0.0-SNAPSHOT</version>
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <includes>
-                        <include>**/*Test.java</include>
-                    </includes>
-                </configuration>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-surefire-plugin</artifactId>-->
+                <!--<configuration>-->
+                    <!--<includes>-->
+                        <!--<include>**/*Test.java</include>-->
+                    <!--</includes>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
 
             <plugin>
                 <groupId>com.google.code.maven-license-plugin</groupId>
@@ -659,6 +659,56 @@
         </dependency>
         <!-- == End Tomcat == -->
 
+
+        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>junit</artifactId>
+                    <groupId>junit</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>2.53.0</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-chrome-driver</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-ie-driver</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-safari-driver</artifactId>
+                </exclusion>
+                <!--<exclusion>-->
+                <!--<groupId>org.seleniumhq.selenium</groupId>-->
+                <!--<artifactId>selenium-firefox-driver</artifactId>-->
+                <!--</exclusion>-->
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-api</artifactId>
+            <version>2.53.0</version>
+        </dependency>
     </dependencies>
     <properties>
         <!-- == Google == -->
@@ -692,7 +742,8 @@
         <org.lazyluke.version>0.2.6</org.lazyluke.version>
         <!-- == Spring Framework == -->
         <org.springframework-version>3.2.3.RELEASE</org.springframework-version>
-        <org.springframework.data.spring-data-jpa.version>1.3.1.RELEASE</org.springframework.data.spring-data-jpa.version>
+        <org.springframework.data.spring-data-jpa.version>1.3.1.RELEASE
+        </org.springframework.data.spring-data-jpa.version>
         <org.springframework.data.version>1.5.1.RELEASE</org.springframework.data.version>
         <org.springframework.security.version>3.1.4.RELEASE</org.springframework.security.version>
         <!-- == Tiles == -->
@@ -707,7 +758,7 @@
         <!-- == database == -->
         <com.h2database.version>1.3.156</com.h2database.version>
         <!-- == JUnit == -->
-        <junit.version>4.7</junit.version>
+        <junit.version>4.12</junit.version>
         <org.mockito.version>1.9.0</org.mockito.version>
         <selenium.version>2.32.0</selenium.version>
         <!-- == Maven Plugins == -->
@@ -723,7 +774,6 @@
         <org.apache.maven.plugins.maven-resources-plugin.version>2.6</org.apache.maven.plugins.maven-resources-plugin.version>
         <org.apache.maven.plugins.maven-site-plugin.version>3.1</org.apache.maven.plugins.maven-site-plugin.version>
         <org.apache.maven.plugins.maven-source-plugin.version>2.2</org.apache.maven.plugins.maven-source-plugin.version>
-        <org.apache.maven.plugins.maven-surefire-report-plugin.version>2.4.3</org.apache.maven.plugins.maven-surefire-report-plugin.version>
         <org.apache.maven.plugins.maven-war-plugin.version>2.2</org.apache.maven.plugins.maven-war-plugin.version>
         <org.apache.maven.plugins.version>2.5</org.apache.maven.plugins.version>
         <org.apache.maven.plugins.version>2.9</org.apache.maven.plugins.version>
@@ -731,9 +781,9 @@
         <org.apache.tomcat.maven.version>2.2</org.apache.tomcat.maven.version>
         <org.codehaus.mojo.emma-maven-plugin.version>1.0-alpha-3</org.codehaus.mojo.emma-maven-plugin.version>
         <org.codehaus.mojo.version>2.5</org.codehaus.mojo.version>
+        <cucumber.version>1.2.4</cucumber.version>
         <!-- == Other Properties== -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <archetype.test.skip>true</archetype.test.skip>
         <com.google.code.findbugs.version>1.3.9</com.google.code.findbugs.version>
         <com.google.code.maven-license-plugin.version>1.4.0</com.google.code.maven-license-plugin.version>
         <encoding>UTF-8</encoding>
