@@ -1,0 +1,44 @@
+---
+resources:
+- name: spring-petstore
+  type: git
+  source:
+      uri: https://github.com/qianyan/spring-jpetstore.git
+
+- name: petstore-docker-image
+  type: docker-image
+  source:
+   repository: lambeta/petstore
+
+jobs:
+- name: build-job
+  plan:
+  - get: spring-petstore
+    trigger: true
+  - task: package
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: 
+          repository: maven
+          tag: alpine
+      inputs: 
+      - name: spring-petstore
+      outputs: 
+      - name: spring-petstore/target
+      run:
+        path: mvn
+        dir: spring-petstore
+        args: ["clean", "package", "-DskipTests=true"]
+  - put: petstore-docker-image
+    params:
+        build: spring-petstore
+#
+#- name: deploy-job
+#  plan:
+#  - get: petstore-docker-image
+#    trigger: true
+#  - task: deploy
+#  file: task_deploy.yml
+
