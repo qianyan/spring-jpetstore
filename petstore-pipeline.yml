@@ -4,6 +4,7 @@ resources:
   type: git
   source:
       uri: https://github.com/qianyan/spring-jpetstore.git
+      branch: master
 
 - name: petstore-docker-image
   type: docker-image
@@ -23,10 +24,11 @@ jobs:
         source: 
           repository: maven
           tag: alpine
-      inputs: 
+      inputs:
       - name: spring-petstore
       outputs: 
-      - name: spring-petstore/target
+      - name: target
+        path: spring-petstore/target
       run:
         path: mvn
         dir: spring-petstore
