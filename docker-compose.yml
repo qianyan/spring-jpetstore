@@ -1,0 +1,4 @@
+web:
+  labels:
+    io.rancher.container.pull_image: always
+  image: %BUILD_IMAGE%
