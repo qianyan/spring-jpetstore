@@ -16,17 +16,18 @@ node {
         env.BUILD_VERSION = version()
     }
 
-    stage('BUILD') {
-        docker.image('maven:3.3.3-jdk-8').inside('-v /root/.m2:/root/.m2') {
-            sh 'mvn test'
-        }
-    }
-
-    stage('SMOKING TEST') {
-        docker.image('maven:3.3.3-jdk-8').inside('-v /root/.m2:/root/.m2') {
-            sh 'mvn clean verify'
-        }
-    }
+    parallel(
+            "UNIT TEST": {
+                docker.image('maven:3.3.3-jdk-8').inside('-v /root/.m2:/root/.m2') {
+                    sh 'mvn clean test'
+                }
+            },
+            "SMOKING TEST": {
+                docker.image('maven:3.3.3-jdk-8').inside('-v /root/.m2:/root/.m2') {
+                    sh 'mvn clean verify'
+                }
+            }
+    )
 
     stage('PUBLISH') {
         def dockerImage = docker.build("${env.BUILD_IMAGE}:${env.BUILD_VERSION}")
