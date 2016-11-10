@@ -10,41 +10,45 @@ env.RANCHER_ACCESS_KEY = null
 env.RANCHER_SECRET_KEY = null
 
 node {
-    stage 'CHECKOUT'
-    git url: "${env.SCM_URL}", branch: "${env.BRANCH_NAME}"
-    env.BUILD_VERSION = version()
-
-    stage 'BUILD'
-    docker.image('maven:3.3.3-jdk-8').inside('-v /root/.m2:/root/.m2') {
-        sh 'mvn test'
+    stage('CHECKOUT') {
+        git url: "${env.SCM_URL}", branch: "${env.BRANCH_NAME}"
+        env.BUILD_VERSION = version()
     }
 
-    stage 'SMOKING TEST'
-    docker.image('maven:3.3.3-jdk-8').inside('-v /root/.m2:/root/.m2') {
-        sh 'mvn clean verify'
+    stage('BUILD') {
+        docker.image('maven:3.3.3-jdk-8').inside('-v /root/.m2:/root/.m2') {
+            sh 'mvn test'
+        }
     }
 
-    stage 'PACKAGE'
-    def dockerImage = docker.build("${env.BUILD_IMAGE}:${env.BUILD_VERSION}")
-
-    stage 'PUBLISH'
-    docker.withRegistry("${env.REPO_RELEASE}", "${env.REPO_CREDENTIALS}") {
-        dockerImage.push("${env.BUILD_VERSION}")
-        dockerImage.push("latest")
+    stage('SMOKING TEST') {
+        docker.image('maven:3.3.3-jdk-8').inside('-v /root/.m2:/root/.m2') {
+            sh 'mvn clean verify'
+        }
     }
 
-    stage 'DEPLOY'
-    env.RANCHER_URL = "http://10.29.10.250:8080/v1/projects/1a125"
-    env.RANCHER_STACK = "margin-monitor"
-    sh "sed -i 's#%BUILD_IMAGE%#${env.BUILD_IMAGE}:${env.BUILD_VERSION}#g' docker-compose.yml"
-    sh '''
+    stage('PUBLISH') {
+        def dockerImage = docker.build("${env.BUILD_IMAGE}:${env.BUILD_VERSION}")
+        docker.withRegistry("${env.REPO_RELEASE}", "${env.REPO_CREDENTIALS}") {
+            dockerImage.push("${env.BUILD_VERSION}")
+            dockerImage.push("latest")
+        }
+    }
+
+    stage('DEPLOY') {
+        env.RANCHER_URL = "http://10.29.10.250:8080/v1/projects/1a125"
+        env.RANCHER_STACK = "margin-monitor"
+        sh "sed -i 's#%BUILD_IMAGE%#${env.BUILD_IMAGE}:${env.BUILD_VERSION}#g' docker-compose.yml"
+        sh '''
         accessKey=''
         secretKey=''
         rancher-compose --access-key $accessKey --secret-key $secretKey -p $RANCHER_STACK up -d -c --upgrade'''
+    }
 
-    stage 'ARCHIVE'
-    archive 'target/*.war'
-    archive 'target/surefire-reports/**'
+    stage('ARCHIVE') {
+        archive 'target/*.war'
+        archive 'target/surefire-reports/**'
+    }
 }
 
 def version() {
