@@ -1,4 +1,5 @@
 env.SCM_URL = "https://github.com/qianyan/spring-jpetstore.git"
+env.BRANCH_NAME = "master"
 env.SCM_CREDENTIALS = "gogs-login"
 env.BUILD_IMAGE = "jpetstore/web"
 env.BUILD_VERSION = null
