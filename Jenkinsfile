@@ -18,12 +18,12 @@ node {
 
     parallel(
             "UNIT TEST": {
-                docker.image('maven:3.3.3-jdk-8').inside('-v /root/.m2:/root/.m2') {
+                docker.image('maven:3.3.9-jdk-8').inside('-v /root/.m2:/root/.m2') {
                     sh 'mvn clean test'
                 }
             },
             "SMOKING TEST": {
-                docker.image('maven:3.3.3-jdk-8').inside('-v /root/.m2:/root/.m2') {
+                docker.image('maven:3.3.9-jdk-8').inside('-v /root/.m2:/root/.m2') {
                     sh 'mvn clean verify'
                 }
             }
