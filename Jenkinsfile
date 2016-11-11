@@ -37,7 +37,7 @@ node {
     }
 
     stage('DEPLOY') {
-        env.RANCHER_URL = "http://52.78.228.216"
+        env.RANCHER_URL = ""
         env.RANCHER_STACK = "margin-monitor"
         sh "sed -i 's#%BUILD_IMAGE%#${env.BUILD_IMAGE}:${env.BUILD_VERSION}#g' docker-compose.yml"
         sh '''
