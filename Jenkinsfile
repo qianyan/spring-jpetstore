@@ -1,10 +1,10 @@
 env.SCM_URL = "https://github.com/qianyan/spring-jpetstore.git"
 env.BRANCH_NAME = "master"
 env.SCM_CREDENTIALS = "gogs-login"
-env.BUILD_IMAGE = "fanlin/jpetstore"
+env.BUILD_IMAGE = ""
 env.BUILD_VERSION = null
 env.REPO_CREDENTIALS = "registry-login"
-env.REPO_RELEASE = "https://registry.alauda.cn"
+env.REPO_RELEASE = ""
 env.RANCHER_URL = null
 env.RANCHER_STACK = null
 env.RANCHER_ACCESS_KEY = null
@@ -39,11 +39,9 @@ node {
     stage('DEPLOY') {
         env.RANCHER_URL = "http://52.78.228.216"
         env.RANCHER_STACK = "margin-monitor"
-        sh "sed -i 's#%BUILD_IMAGE%#registry.alauda.cn/${env.BUILD_IMAGE}:${env.BUILD_VERSION}#g' docker-compose.yml"
+        sh "sed -i 's#%BUILD_IMAGE%#${env.BUILD_IMAGE}:${env.BUILD_VERSION}#g' docker-compose.yml"
         sh '''
-        accessKey='1AA7C5276E402953C5C1'
-        secretKey='JQr2otibAQXrbrooJRDfs2cfAbDxwSMYTRG5Qn1q'
-        rancher-compose --access-key $accessKey --secret-key $secretKey -p $RANCHER_STACK up -d -c --upgrade'''
+        rancher-compose --access-key ${env.RANCHER_ACCESS_KEY} --secret-key ${env.RANCHER_SECRET_KEY} -p $RANCHER_STACK up -d -c --upgrade'''
     }
 
     stage('ARCHIVE') {
